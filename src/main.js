@@ -10,7 +10,7 @@ import {
   clearGallery,
   showLoader,
   hideLoader,
-} from "./js/render-function.js";
+} from "./js/render-functions.js";
 
 const form = document.querySelector(".form");
 const input = document.querySelector('[name="search-text"]');
