@@ -5,17 +5,14 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 import { getImagesByQuery } from "./js/pixabay-api.js";
 import {
-  initLightbox,
   createGallery,
   clearGallery,
   showLoader,
   hideLoader,
 } from "./js/render-functions.js";
 
-const form = document.querySelector(".form");
+const form  = document.querySelector(".form");
 const input = document.querySelector('[name="search-text"]');
-
-initLightbox();
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -38,7 +35,8 @@ form.addEventListener("submit", (event) => {
         });
         return;
       }
-      createGallery(hits); 
+      
+      createGallery(hits);
     })
     .catch((err) => {
       iziToast.error({ message: err.message || "Network or server error" });

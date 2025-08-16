@@ -1,51 +1,59 @@
 import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
-let lightbox;
+let lightbox = null;
 
-const gallery = document.querySelector('.gallery')
+const gallery = document.querySelector(".gallery");
+const loader  = document.querySelector(".loader");
 
-export function initLightbox(selector = '.gallery a') {
-
-    lightbox = new SimpleLightbox(selector, { captionsData: "alt", captionDelay: 250 });
-
+function ensureLightbox() {
+  // Якщо ще не створений — створюємо
+  if (!lightbox) {
+    lightbox = new SimpleLightbox(".gallery a", {
+      captionsData: "alt",
+      captionDelay: 250,
+      nav: true,           
+      loop: true,          
+      showCounter: true,  
+    });
+  } else {
+   
+    lightbox.refresh();
+  }
 }
-export function refreshLightbox() {
-    if (lightbox) {
-        lightbox.refresh();
-     }
-}
- 
+
 export function createGallery(images) {
-    const markup = images.map(image => 
-        `<li class="card">
-  <a href="${image.largeImageURL}" rel="noopener noreferrer">
-    <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy">
-  </a>
-  <ul class="stats">
-    <li><span>Likes</span><span>${image.likes}</span></li>
-    <li><span>Views</span><span>${image.views}</span></li>
-    <li><span>Comments</span><span>${image.comments}</span></li>
-    <li><span>Downloads</span><span>${image.downloads}</span></li>
-  </ul>
-</li>
-`
-    
-    ).join(''); 
+  const markup = images
+    .map(
+      (img) => `
+      <li class="card">
+        <a href="${img.largeImageURL}" rel="noopener noreferrer">
+          <img src="${img.webformatURL}" alt="${img.tags || "image"}" loading="lazy">
+        </a>
+        <ul class="stats">
+          <li><span>Likes</span><span>${img.likes}</span></li>
+          <li><span>Views</span><span>${img.views}</span></li>
+          <li><span>Comments</span><span>${img.comments}</span></li>
+          <li><span>Downloads</span><span>${img.downloads}</span></li>
+        </ul>
+      </li>`
+    )
+    .join("");
 
-    gallery.innerHTML = markup;
+  gallery.innerHTML = markup;
 
-    refreshLightbox();
+  
+  ensureLightbox();
 }
-export function clearGallery() {
-    gallery.innerHTML = "";
-    }
 
-const loader = document.querySelector('#loader');
+export function clearGallery() {
+  gallery.innerHTML = "";
+}
 
 export function showLoader() {
-    if (loader) loader.classList.remove('hidden');
+  if (loader) loader.classList.remove("hidden");
 }
 
 export function hideLoader() {
-    if (loader) loader.classList.add('hidden');
+  if (loader) loader.classList.add("hidden");
 }
